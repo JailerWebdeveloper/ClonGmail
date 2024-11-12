@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { Navigate } from "react-router-dom";
-import { Toaster, toast } from 'sonner'
+import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from 'sonner';
+
 const Register = () => {
     const [formState, setFormState] = useState({
         username: "",
@@ -10,6 +11,7 @@ const Register = () => {
         confirmPassword: "",
     });
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate(); // Cambia Navigate a useNavigate
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,24 +45,22 @@ const Register = () => {
                 });
 
                 if (response.ok) {
-                    console.log("User registered successfully");
-                    toast('Usuario Registrado correctamente')
-                    Navigate("/Login")
+                    toast.success('Usuario Registrado correctamente');
+                    navigate("/login"); // Usar navigate para redirigir
                 } else {
-                    toast.error(`Error al crear registro ${response.statusText}`)
-
+                    toast.error(`Error al crear registro: ${response.statusText}`);
                     console.error("Registration failed");
                 }
             } catch (error) {
-                toast.error('Event has not been created')
+                toast.error('Event has not been created');
                 console.error("Error during registration:", error);
-
             }
         }
     };
 
     return (
         <div className="mt-7 max-w-lg mx-auto bg-white border border-gray-200 rounded-xl shadow-sm">
+            <Toaster position="top-right" />
             <div className="p-4 sm:p-7">
                 <div className="text-center">
                     <h1 className="block text-2xl font-bold text-gray-800">Sign up</h1>
